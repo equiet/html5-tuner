@@ -1,0 +1,109 @@
+@mixin gradient($color1, $color2) {
+  background-color: $color2; 
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from($color1), to($color2));
+  background: -webkit-linear-gradient(top, $color1, $color2); 
+  background: -moz-linear-gradient(top, $color1, $color2);
+  background: -ms-linear-gradient(top, $color1, $color2);
+  background: -o-linear-gradient(top, $color1, $color2); 
+}
+@mixin transition ($value) {
+  -moz-transition: $value;
+  -webkit-transition: $value;
+  -o-transition: $value;
+  transition: $value;
+}
+
+html {
+	height: 100%; 
+	font-size: 20px;
+}
+body {
+	font-family: "Open Sans", "Helvetica Neue", sans-serif;
+	height: 100%;
+	color: #fff;
+	margin: 0;
+	text-shadow: 0px 1px 1px #000;
+	@include gradient(#222, #111);
+}
+
+a {
+	color: #fff;
+	text-decoration: none;
+	font-weight: 700;
+}
+
+#container {
+	width: 600px;
+	margin: 0 auto;
+	text-align: center;
+	position: relative;
+	top: 50%;
+}
+
+.scale {
+}
+
+.needle {
+}
+
+.frequency {
+
+	.actual {
+		font-size: 1.1rem;
+		font-weight: 700;
+	}
+	.hz {
+		font-size: 0.6rem;
+		font-weight: 700;
+		color: #333;
+	}
+}
+
+.notes {
+	li {
+		list-style: none;
+		display: inline-block;
+		font-size: 0.9rem;
+		
+		a {
+			display: inline-block;
+			color: #333;
+			line-height: 1rem;
+			
+			span {
+				display: inline-block;
+				font-size: 0.5rem;
+				line-height: 1rem;
+				vertical-align: middle;
+				position: relative;
+				top: -1px;
+			}
+		}
+		&:after {
+			content: '\a0\b7';
+			display: inline-block;
+			margin: 0 3px;
+			color: rgba(255,255,255,0.1);
+		}
+			&:last-child:after {
+				content: '';
+			}
+	}
+}
+
+footer {
+	position: absolute;
+	bottom: 20px;
+	width: 100%;
+	text-align: center;
+	font-size: 0.5rem;
+	
+	a {
+		color: rgba(255,255,255,0.3);
+		@include transition(color 0.5s);
+		
+		&:hover {
+			color: rgba(255,255,255,1);
+		}
+	}
+}
