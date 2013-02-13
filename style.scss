@@ -49,10 +49,12 @@ a {
 .frequency {
 
 	.actual {
+		display: block;
 		font-size: 1.1rem;
 		font-weight: 700;
 	}
 	.hz {
+		display: block;
 		font-size: 0.6rem;
 		font-weight: 700;
 		color: #333;
@@ -63,12 +65,14 @@ a {
 	li {
 		list-style: none;
 		display: inline-block;
-		font-size: 0.9rem;
+		font-size: 1rem;
 		
 		a {
 			display: inline-block;
 			color: #333;
 			line-height: 1rem;
+			padding: 0.4rem;
+			@include transition(color 0.3s);
 			
 			span {
 				display: inline-block;
@@ -78,15 +82,18 @@ a {
 				position: relative;
 				top: -1px;
 			}
+			&.selected, &:hover {
+				color: #ccc;
+			}
 		}
 		&:after {
 			content: '\a0\b7';
 			display: inline-block;
-			margin: 0 3px;
+			margin: 0 -0.3rem;
 			color: rgba(255,255,255,0.1);
 		}
 			&:last-child:after {
-				content: '';
+				content: '\a0\a0';
 			}
 	}
 }
@@ -99,6 +106,7 @@ footer {
 	font-size: 0.5rem;
 	
 	a {
+		font-weight: 600;
 		color: rgba(255,255,255,0.3);
 		@include transition(color 0.5s);
 		
@@ -106,4 +114,10 @@ footer {
 			color: rgba(255,255,255,1);
 		}
 	}
+}
+
+canvas {
+	position: absolute;
+	bottom: 0;
+	z-index: -1;
 }

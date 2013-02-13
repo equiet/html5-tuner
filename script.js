@@ -2,26 +2,48 @@
 (function() {
   var errorCallback, successCallback;
 
-  window.URL = window.URL || window.webkitURL;
-
   window.AudioContext = window.AudioContext || window.mozAudioContext || window.webkitAudioContext || window.msAudioContext || window.oAudioContext;
 
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
   successCallback = function(stream) {
-    var actualFrequency, analyser, context, scriptNode, sourceNode;
+    var actualFrequency, analyser, canvas, context, ctx, scriptNode, sourceNode;
     context = new AudioContext;
     sourceNode = context.createMediaStreamSource(stream);
     analyser = context.createAnalyser();
-    analyser.smoothingTimeConstant = 0.3;
-    analyser.fftSize = 128;
+    analyser.smoothingTimeConstant = 0.5;
+    analyser.fftSize = 2048;
     scriptNode = context.createScriptProcessor(2048, 1, 1);
     actualFrequency = document.querySelector(".frequency .actual");
+    canvas = document.querySelector("canvas");
+    ctx = canvas.getContext("2d");
     scriptNode.onaudioprocess = function() {
-      var array;
-      array = new Uint8Array(analyser.frequencyBinCount);
-      analyser.getByteFrequencyData(array);
-      return actualFrequency.innerHTML = (array[0] + array[array.length - 1]) / 2;
+      var audioData, average, frequency, i, numCrossing, numCycles, numSamples, numSecondsRecorded, p, _i, _j, _k, _ref, _ref1, _ref2, _results;
+      audioData = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(audioData);
+      average = 0;
+      for (i = _i = 0, _ref = audioData.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        average += audioData[i];
+      }
+      average = average / audioData.length;
+      numSamples = audioData.length;
+      numCrossing = 0;
+      for (p = _j = 0, _ref1 = numSamples - 1; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; p = 0 <= _ref1 ? ++_j : --_j) {
+        if ((audioData[p] > 0 && audioData[p + 1] <= 0) || (audioData[p] < 0 && audioData[p + 1] >= 0)) {
+          numCrossing++;
+        }
+      }
+      numSecondsRecorded = numSamples / context.sampleRate;
+      numCycles = numCrossing / 2;
+      frequency = numCycles / numSecondsRecorded;
+      actualFrequency.innerHTML = frequency;
+      canvas.width = canvas.width;
+      ctx.fillStyle = "#ffffff";
+      _results = [];
+      for (i = _k = 0, _ref2 = audioData.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
+        _results.push(ctx.fillRect(i, canvas.height - audioData[i], 1, 1));
+      }
+      return _results;
     };
     sourceNode.connect(analyser);
     analyser.connect(scriptNode);
