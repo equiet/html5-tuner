@@ -14,7 +14,8 @@ navigator.getUserMedia = navigator.getUserMedia or navigator.mozGetUserMedia or 
 
 
 canvas = document.querySelector "canvas"
-needle = document.querySelector	".needle"
+elNeedle = document.querySelector ".needle div"
+elFreq = document.querySelector ".frequency .value"
 
 
 context = canvas.getContext '2d'
@@ -162,6 +163,9 @@ success = (stream) ->
 
 			debugFreq = document.querySelector ".debug .frequency"
 			debugFreq.innerHTML = freq
+
+			elFreq.innerHTML = Math.floor(freq*100)/100
+			elNeedle.style.webkitTransform = "rotate(#{Math.floor freq/3}deg)";
 
 			###
 			displayDiv = $('.tuner div')
