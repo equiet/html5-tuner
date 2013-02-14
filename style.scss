@@ -1,23 +1,23 @@
 @mixin gradient($color1, $color2) {
-  background-color: $color2; 
+  //background-color: $color2; 
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from($color1), to($color2));
-  background: -webkit-linear-gradient(top, $color1, $color2); 
-  background: -moz-linear-gradient(top, $color1, $color2);
-  background: -ms-linear-gradient(top, $color1, $color2);
-  background: -o-linear-gradient(top, $color1, $color2); 
+  //background: -webkit-linear-gradient(top, $color1, $color2); 
+  //background: -moz-linear-gradient(top, $color1, $color2);
+  //background: -ms-linear-gradient(top, $color1, $color2);
+  //background: -o-linear-gradient(top, $color1, $color2); 
 }
 @mixin transition ($value) {
-  -moz-transition: $value;
-  -webkit-transition: $value;
-  -o-transition: $value;
+  //-moz-transition: $value;
+  //-webkit-transition: $value;
+  //-o-transition: $value;
   transition: $value;
 }
 @mixin transform ($action) {
-  -ms-transform: $action;
+  //-ms-transform: $action;
   -webkit-transform: $action;
-  -o-transform: $action;
-  -moz-transform: $action;
-  transform: $action;
+  //-o-transform: $action;
+  //-moz-transform: $action;
+  //transform: $action;
 }
 
 html {
@@ -66,7 +66,7 @@ a {
 	// Rotate
 	@for $i from 1 through 81 {
 		div:nth-child(#{$i}) {
-			@include transform(rotate(#{$i*1+48}deg));
+			@include transform(rotate(#{$i+48}deg));
 		}
 	}
 
@@ -80,14 +80,14 @@ a {
 	}
 
 	// Major lines
-	div:nth-child(10n+1) {
+	div:nth-child(16n+9) {
 		hr {
 			width: 10px;
 			border-bottom: 1px solid rgba(255,255,255,1);
 		}
 	}
 
-	// Central lines
+	// Middle line
 	div:nth-child(41) {
 		hr {
 			width: 12px;
@@ -102,6 +102,37 @@ a {
 		}
 	}
     
+}
+
+.labels {
+	position: relative;
+	top: -160px;
+	
+	span {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 740px;
+		text-align: center;
+		font-size: 0.5rem;
+		color: rgba(255,255,255,0.3);
+	}
+
+	// Rotate
+	@for $i from 1 through 5 {
+		span:nth-child(#{$i}) {
+			@include transform(rotate(#{-49+$i*16}deg));
+		}
+	}
+
+	// Opacity
+	span:nth-child(1), span:nth-child(5) {
+		opacity: 0.4;
+	}
+	span:nth-child(2), span:nth-child(4) {
+		opacity: 0.7;
+	}
+
 }
 
 .needle {
