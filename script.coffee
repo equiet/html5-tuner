@@ -1,3 +1,14 @@
+scale = document.querySelector ".scale"
+
+for i in [0..80]
+	div = document.createElement "div"
+	hr = document.createElement "hr"
+	div.appendChild hr
+	scale.appendChild div
+
+
+
+
 window.AudioContext = window.AudioContext or window.mozAudioContext or window.webkitAudioContext or window.msAudioContext or window.oAudioContext
 navigator.getUserMedia = navigator.getUserMedia or navigator.mozGetUserMedia or navigator.webkitGetUserMedia or navigator.msGetUserMedia or navigator.oGetUserMedia
 

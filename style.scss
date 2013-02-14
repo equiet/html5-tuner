@@ -12,6 +12,13 @@
   -o-transition: $value;
   transition: $value;
 }
+@mixin transform ($action) {
+  -ms-transform: $action;
+  -webkit-transform: $action;
+  -o-transform: $action;
+  -moz-transform: $action;
+  transform: $action;
+}
 
 html {
 	height: 100%; 
@@ -33,7 +40,7 @@ a {
 }
 
 #container {
-	width: 600px;
+	width: 700px;
 	margin: 0 auto;
 	text-align: center;
 	position: relative;
@@ -41,6 +48,60 @@ a {
 }
 
 .scale {
+	position: relative;
+	top: 200px;
+	
+	div {
+		position: absolute;
+		width: 100%;
+	}
+		
+	hr {
+		float: left;
+		width: 6px;
+		border: 0;
+		border-bottom: 1px solid rgba(255,255,255,0.7);
+	}
+
+	// Rotate
+	@for $i from 1 through 81 {
+		div:nth-child(#{$i}) {
+			@include transform(rotate(#{$i*1+48}deg));
+		}
+	}
+
+	// Minor lines
+	div:nth-child(2n) {
+		hr {
+			width: 2px;
+			margin-left: 2px;
+			border-bottom: 1px solid rgba(255,255,255,0.3);
+		}
+	}
+
+	// Major lines
+	div:nth-child(10n+1) {
+		hr {
+			width: 10px;
+			border-bottom: 1px solid rgba(255,255,255,1);
+		}
+	}
+
+	// Central lines
+	div:nth-child(41) {
+		hr {
+			width: 12px;
+			border-bottom: 2px solid rgba(255,255,255,1);
+		}
+	}
+
+	// Opacity
+	@for $i from 1 through 20 {
+		div:nth-child(#{$i}), div:nth-child(#{82-$i}) {
+			opacity: $i/20;
+		}
+	}
+    
 }
 
 .needle {
@@ -62,10 +123,15 @@ a {
 }
 
 .notes {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	z-index: 100;
+	
 	li {
 		list-style: none;
 		display: inline-block;
-		font-size: 1rem;
+		font-size: 0.8rem;
 		
 		a {
 			display: inline-block;
