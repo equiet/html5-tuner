@@ -76,10 +76,7 @@ success = (stream) ->
 		fft.forward upsampled
     
 		if noiseCount < 10
-			noiseThreshold = _.reduce(fft.spectrum, 
-				((max, next) -> 
-					if next > max then next else max)
-				, noiseThreshold)
+			noiseThreshold = Math.max(noiseThreshold, i) for i in fft.spectrum
 			noiseThrehold = if noiseThreshold > 0.001 then 0.001 else noiseThreshold
 			noiseCount++
       

@@ -78,7 +78,7 @@
     hp.connect(bufferFiller);
     bufferFiller.connect(audioContext.destination);
     process = function() {
-      var b, bufferCopy, downsampled, firstFreq, freq, interp, left, noiseThrehold, p, peak, peaks, q, right, s, secondFreq, spectrumPoints, thirdFreq, upsampled, x, _i, _j, _k, _l, _len, _m, _ref, _ref1, _ref2, _ref3, _ref4;
+      var b, bufferCopy, downsampled, firstFreq, freq, interp, left, noiseThrehold, p, peak, peaks, q, right, s, secondFreq, spectrumPoints, thirdFreq, upsampled, x, _i, _j, _k, _l, _len, _len1, _m, _n, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
       bufferCopy = (function() {
         var _i, _len, _results;
         _results = [];
@@ -103,20 +103,18 @@
       }
       fft.forward(upsampled);
       if (noiseCount < 10) {
-        noiseThreshold = _.reduce(fft.spectrum, (function(max, next) {
-          if (next > max) {
-            return next;
-          } else {
-            return max;
-          }
-        }), noiseThreshold);
+        _ref1 = fft.spectrum;
+        for (_k = 0, _len1 = _ref1.length; _k < _len1; _k++) {
+          i = _ref1[_k];
+          noiseThreshold = Math.max(noiseThreshold, i);
+        }
         noiseThrehold = noiseThreshold > 0.001 ? 0.001 : noiseThreshold;
         noiseCount++;
       }
       spectrumPoints = (function() {
-        var _k, _ref1, _results;
+        var _l, _ref2, _results;
         _results = [];
-        for (x = _k = 0, _ref1 = fft.spectrum.length / 4; 0 <= _ref1 ? _k < _ref1 : _k > _ref1; x = 0 <= _ref1 ? ++_k : --_k) {
+        for (x = _l = 0, _ref2 = fft.spectrum.length / 4; 0 <= _ref2 ? _l < _ref2 : _l > _ref2; x = 0 <= _ref2 ? ++_l : --_l) {
           _results.push({
             x: x,
             y: fft.spectrum[x]
@@ -128,15 +126,15 @@
         return b.y - a.y;
       });
       peaks = [];
-      for (p = _k = 0; _k < 8; p = ++_k) {
+      for (p = _l = 0; _l < 8; p = ++_l) {
         if (spectrumPoints[p].y > noiseThreshold * 5) {
           peaks.push(spectrumPoints[p]);
         }
       }
       if (peaks.length > 0) {
-        for (p = _l = 0, _ref1 = peaks.length; 0 <= _ref1 ? _l < _ref1 : _l > _ref1; p = 0 <= _ref1 ? ++_l : --_l) {
+        for (p = _m = 0, _ref2 = peaks.length; 0 <= _ref2 ? _m < _ref2 : _m > _ref2; p = 0 <= _ref2 ? ++_m : --_m) {
           if (peaks[p] != null) {
-            for (q = _m = 0, _ref2 = peaks.length; 0 <= _ref2 ? _m < _ref2 : _m > _ref2; q = 0 <= _ref2 ? ++_m : --_m) {
+            for (q = _n = 0, _ref3 = peaks.length; 0 <= _ref3 ? _n < _ref3 : _n > _ref3; q = 0 <= _ref3 ? ++_n : --_n) {
               if (p !== q && (peaks[q] != null)) {
                 if (Math.abs(peaks[p].x - peaks[q].x) < 5) {
                   peaks[q] = null;
@@ -146,10 +144,10 @@
           }
         }
         peaks = (function() {
-          var _len1, _n, _results;
+          var _len2, _o, _results;
           _results = [];
-          for (_n = 0, _len1 = peaks.length; _n < _len1; _n++) {
-            p = peaks[_n];
+          for (_o = 0, _len2 = peaks.length; _o < _len2; _o++) {
+            p = peaks[_o];
             if (p != null) {
               _results.push(p);
             }
@@ -167,13 +165,13 @@
         firstFreq = peaks[0].x * (sampleRate / fftSize);
         if (peaks.length > 1) {
           secondFreq = peaks[1].x * (sampleRate / fftSize);
-          if ((1.4 < (_ref3 = firstFreq / secondFreq) && _ref3 < 1.6)) {
+          if ((1.4 < (_ref4 = firstFreq / secondFreq) && _ref4 < 1.6)) {
             peak = peaks[1];
           }
         }
         if (peaks.length > 2) {
           thirdFreq = peaks[2].x * (sampleRate / fftSize);
-          if ((1.4 < (_ref4 = firstFreq / thirdFreq) && _ref4 < 1.6)) {
+          if ((1.4 < (_ref5 = firstFreq / thirdFreq) && _ref5 < 1.6)) {
             peak = peaks[2];
           }
         }
