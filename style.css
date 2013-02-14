@@ -83,6 +83,14 @@ footer {
     footer a:hover {
       color: white; }
 
+.debug {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  text-align: right; }
+  .debug span {
+    display: block; }
+
 canvas {
   position: absolute;
   bottom: 0;

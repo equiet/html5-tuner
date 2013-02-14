@@ -2,6 +2,13 @@ window.AudioContext = window.AudioContext || window.mozAudioContext || window.we
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 
 
+sign = (x) ->
+	x > 0
+
+precision = (x) ->
+	Math.floor(x*100) / 100
+
+
 successCallback = (stream) ->
 
 	context = new AudioContext
@@ -15,7 +22,7 @@ successCallback = (stream) ->
 
 	lp = context.createBiquadFilter()
 	lp.type = lp.LOWPASS
-	lp.frequency = 8000
+	lp.frequency = 4000
 	lp.Q = 0.1
 
 	hp = context.createBiquadFilter()
@@ -25,36 +32,63 @@ successCallback = (stream) ->
 
 
 
-	scriptNode = context.createScriptProcessor(2048, 1, 1)
+	scriptNode = context.createScriptProcessor(1024, 1, 1)
 	
 	actualFrequency = document.querySelector ".frequency .actual"
+	debugFrequency = document.querySelector ".debug .frequency"
+	debugCrossings = document.querySelector ".debug .crossings"
 	
 	canvas = document.querySelector "canvas"
 	ctx = canvas.getContext "2d"
+
+	input = null
+	crossings = null
+	frequency = null
+
+	frequencySmoothing = new Array(10)
+	frequencySmoothing = (0 for i in frequencySmoothing)
+	frequencyIterator = 0
 	
 	scriptNode.onaudioprocess = (e) ->
 
 		input = e.inputBuffer.getChannelData 0
 
+		input = (Math.floor i*1000 for i in input)
+
+		crossings++ for p in [0...input.length-1] by 1 when sign(input[p]) != sign(input[p+1])
+
 
 		canvas.width = canvas.width;
+		ctx.fillStyle = "#666666"
+		ctx.fillRect 0, canvas.height/2, 1000, 1
 		ctx.fillStyle = "#ffffff"
 
 
 		for i in [0...input.length]
-			ctx.fillRect i, (canvas.height/2 - Math.floor(input[i]*100)), 1, 1
+			ctx.fillRect i, (canvas.height/2 + Math.floor(input[i])), 1, 1
 
-		sign = (x) ->
-			x > 0
 
 		crossings = 0
 		for p in [0...input.length-1]
 			crossings++ if sign(input[p]) != sign(input[p+1])
 
-		actualFrequency.innerHTML = crossings
+		frequency = (crossings / 2) / (input.length / context.sampleRate)
 
+		#console.log(crossings) if Math.floor(Math.random()*10) == 0;
+		
 		#console.log(input) if Math.floor(Math.random()*100) == 0;
 		
+		
+
+		frequencySmoothing[frequencyIterator++ % frequencySmoothing.length] = frequency
+		avgFrequency = 0
+		avgFrequency += i for i in frequencySmoothing
+		avgFrequency = avgFrequency / frequencySmoothing.length
+
+		actualFrequency.innerHTML = precision avgFrequency
+
+		debugFrequency.innerHTML = precision frequency
+		debugCrossings.innerHTML = crossings
 		
 		# bincount is fftsize / 2
 		#audioData = new Uint8Array(analyser.frequencyBinCount)
@@ -109,7 +143,7 @@ successCallback = (stream) ->
 	#sourceNode.connect analyser
 	sourceNode.connect scriptNode
 	lp.connect hp
-	hp.connect analyser
+	hp.connect scriptNode
 	#sourceNode.connect(context.destination)
 	#analyser.connect scriptNode
 	scriptNode.connect context.destination

@@ -116,6 +116,17 @@ footer {
 	}
 }
 
+.debug {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	text-align: right;
+	
+	span {
+		display: block;
+	}
+}
+
 canvas {
 	position: absolute;
 	bottom: 0;
