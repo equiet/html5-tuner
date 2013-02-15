@@ -205,6 +205,11 @@ a {
 			&:last-child:after {
 				content: '\a0\a0';
 			}
+		&.active {
+			a {
+				color: #ccc;
+			}
+		}
 	}
 }
 
