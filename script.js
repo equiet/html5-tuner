@@ -324,12 +324,14 @@
     display = {
       draw: function(freq) {
         var activeNote, debugFreq, debugNote, diff, note, _ref;
-        debugFreq = document.querySelector(".debug .frequency");
+        debugFreq = document.querySelector(".debug-frequency");
         debugFreq.innerHTML = freq;
         elFreq.innerHTML = Math.floor(freq * 100) / 100;
+        elFreq.classList.remove("inactive");
+        elNeedle.classList.remove("inactive");
         elNeedle.style.webkitTransform = "rotate(" + (Math.floor(freq / 3)) + "deg)";
         _ref = getPitch(freq), note = _ref[0], diff = _ref[1];
-        debugNote = document.querySelector(".debug .note");
+        debugNote = document.querySelector(".debug-note");
         debugNote.innerHTML = note;
         activeNote = document.querySelector(".notes .active");
         if (activeNote) {
@@ -352,9 +354,13 @@
 
       },
       clear: function() {
-        var debugFreq;
-        debugFreq = document.querySelector(".debug .frequency");
-        return debugFreq.innerHTML = "";
+        var activeNote;
+        activeNote = document.querySelector(".notes .active");
+        if (activeNote) {
+          activeNote.classList.remove("active");
+        }
+        elFreq.classList.add("inactive");
+        return elNeedle.classList.add("inactive");
         /*
         			displayDiv = $('.tuner div')
         			displayDiv.removeClass()

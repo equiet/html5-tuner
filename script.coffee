@@ -179,16 +179,17 @@ success = (stream) ->
 
 		draw: (freq) ->
 
-			debugFreq = document.querySelector ".debug .frequency"
+			debugFreq = document.querySelector ".debug-frequency"
 			debugFreq.innerHTML = freq
 
 			elFreq.innerHTML = Math.floor(freq*100)/100
+			elFreq.classList.remove "inactive"
+			elNeedle.classList.remove "inactive"
 			elNeedle.style.webkitTransform = "rotate(#{Math.floor freq/3}deg)";
-
+	
 			[note, diff] = getPitch freq
 
-
-			debugNote = document.querySelector ".debug .note"
+			debugNote = document.querySelector ".debug-note"
 			debugNote.innerHTML = note
 
 			activeNote = document.querySelector ".notes .active"
@@ -210,9 +211,12 @@ success = (stream) ->
 			###
 
 		clear: ->
+			
+			activeNote = document.querySelector ".notes .active"
+			activeNote.classList.remove "active" if activeNote
 
-			debugFreq = document.querySelector ".debug .frequency"
-			debugFreq.innerHTML = ""
+			elFreq.classList.add "inactive"
+			elNeedle.classList.add "inactive"
 
 			###
 			displayDiv = $('.tuner div')
