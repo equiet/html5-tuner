@@ -16,6 +16,12 @@ canvas = document.querySelector "canvas"
 elNeedle = document.querySelector ".needle div"
 elFreq = document.querySelector ".frequency .value"
 
+prevNote = false
+
+
+precision = (x) ->
+	Math.round(x*100) / 100
+
 
 
 frequencies =
@@ -174,26 +180,85 @@ success = (stream) ->
 		note
 
 
+	getNeighbours = (note) ->
+		lower = 'A0'
+		higher = 'G#7'
+		for own key, val of frequencies
+			lower = key if frequencies[lower] < val < frequencies[note]
+			higher = key if frequencies[higher] > val > frequencies[note]
+		[lower, higher]
+
+
 	display = 
 
 		draw: (freq) ->
-
-			(document.querySelector ".debug-frequency").innerHTML = freq
-
-			elFreq.innerHTML = Math.floor(freq*100)/100
-			elFreq.classList.remove "inactive"
-			elNeedle.classList.remove "inactive"
-			elNeedle.style.webkitTransform = "rotate(#{Math.floor freq/3}deg)";
 	
 			note = getPitch freq
+			[lower, higher] = getNeighbours note
+
+			lowStep = (frequencies[note] - frequencies[lower]) / 5
+			highStep = (frequencies[note] - frequencies[lower]) / 5
+
+
+			toRemove = document.querySelector ".labels .to-remove"
+			toRemove.parentNode.removeChild(toRemove) if toRemove
+
+
+			# Remove old labels
+			prevLabels = (document.querySelector ".labels .current") || document.createElement "div"
+			if frequencies[prevNote] < frequencies[note]
+				prevLabels.setAttribute "class", "lower"
+			else
+				prevLabels.setAttribute "class", "higher"
+			
+
+
+			nextLabels = document.createElement "div"
+			if frequencies[prevNote] < frequencies[note]
+				nextLabels.classList.add "higher"
+			else
+				nextLabels.classList.add "lower"
+
+			for i in [0...5]
+				span = document.createElement "span"
+				span.innerHTML = precision (frequencies[note] + (i-2)*lowStep)
+				nextLabels.appendChild span
+			labels.appendChild nextLabels
+
+			nextLabels.classList.add "current"
+			nextLabels.classList.remove "higher"
+			nextLabels.classList.remove "lower"
+
+			prevLabels.classList.remove "current"
+			prevLabels.classList.add "to-remove"
+			if frequencies[prevNote] < frequencies[note]
+				prevLabels.classList.add "lower"
+			else
+				prevLabels.classList.add "higher"
+
+
+			elFreq.innerHTML = precision freq
+			elFreq.classList.remove "inactive"
+			elNeedle.classList.remove "inactive"
+
+
+			low = frequencies[note] - 2*lowStep
+			variation = (freq - frequencies[note]) / (frequencies[note] - low)
+
+			elNeedle.style.webkitTransform = "rotate(#{precision(variation*32+90)}deg)";
+
 
 			(document.querySelector ".debug-note").innerHTML = note
+			(document.querySelector ".debug-frequency").innerHTML = freq
+
 
 			activeNote = document.querySelector ".notes .active"
 			activeNote.classList.remove "active" if activeNote
 
 			activeNote = document.querySelector "#" + note.replace(/[0-9]+/, '').replace('#', '-sharp').toLowerCase()
 			activeNote.classList.add "active" if activeNote
+
+			prevNote = note
 
 
 		clear: ->

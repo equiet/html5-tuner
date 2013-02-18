@@ -265,7 +265,7 @@ a {
     color: rgba(255, 255, 255, 0.3); }
   .labels .lower {
     opacity: 0;
-    -webkit-transform: rotate(-128deg); }
+    -webkit-transform: rotate(-58deg); }
   .labels .lower span:nth-child(1) {
     -webkit-transform: rotate(16deg); }
   .labels .lower span:nth-child(2) {
@@ -291,7 +291,7 @@ a {
     -webkit-transform: rotate(80deg); }
   .labels .higher {
     opacity: 0;
-    -webkit-transform: rotate(32deg); }
+    -webkit-transform: rotate(-38deg); }
   .labels .higher span:nth-child(1) {
     -webkit-transform: rotate(16deg); }
   .labels .higher span:nth-child(2) {

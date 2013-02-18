@@ -127,7 +127,7 @@ a {
 	// Rotate lower
 	.lower {
 		opacity: 0;
-		@include transform(rotate(-128deg));
+		@include transform(rotate(-58deg));
 	}
 	@for $i from 1 through 5 {
 		.lower span:nth-child(#{$i}) {
@@ -149,7 +149,7 @@ a {
 	// Rotate higher
 	.higher {
 		opacity: 0;
-		@include transform(rotate(32deg));
+		@include transform(rotate(-38deg));
 	}
 	@for $i from 1 through 5 {
 		.higher span:nth-child(#{$i}) {
