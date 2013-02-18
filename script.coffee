@@ -189,6 +189,25 @@ success = (stream) ->
 		[lower, higher]
 
 
+	removeLower = (el) ->
+		el.setAttribute "class", "lower"
+		setTimeout (-> el.parentNode.removeChild el), 500
+
+	removeHigher = (el) ->
+		el.setAttribute "class", "higher"
+		setTimeout (-> el.parentNode.removeChild el), 500
+
+	addLower = (el) ->
+		el.setAttribute	"class", "lower"
+		labels.appendChild el
+		setTimeout (-> el.setAttribute "class", "current"), 100
+
+	addHigher = (el) ->
+		el.setAttribute	"class", "higher"
+		labels.appendChild el
+		setTimeout (-> el.setAttribute "class", "current"), 100
+
+
 	display = 
 
 		draw: (freq) ->
@@ -199,42 +218,20 @@ success = (stream) ->
 			lowStep = (frequencies[note] - frequencies[lower]) / 5
 			highStep = (frequencies[note] - frequencies[lower]) / 5
 
-
-			toRemove = document.querySelector ".labels .to-remove"
-			toRemove.parentNode.removeChild(toRemove) if toRemove
-
-
-			# Remove old labels
-			prevLabels = (document.querySelector ".labels .current") || document.createElement "div"
-			if frequencies[prevNote] < frequencies[note]
-				prevLabels.setAttribute "class", "lower"
-			else
-				prevLabels.setAttribute "class", "higher"
-			
-
+			prevLabels = (document.querySelectorAll ".labels .current") || document.createElement "div"
 
 			nextLabels = document.createElement "div"
-			if frequencies[prevNote] < frequencies[note]
-				nextLabels.classList.add "higher"
-			else
-				nextLabels.classList.add "lower"
-
 			for i in [0...5]
 				span = document.createElement "span"
 				span.innerHTML = precision (frequencies[note] + (i-2)*lowStep)
 				nextLabels.appendChild span
-			labels.appendChild nextLabels
 
-			nextLabels.classList.add "current"
-			nextLabels.classList.remove "higher"
-			nextLabels.classList.remove "lower"
-
-			prevLabels.classList.remove "current"
-			prevLabels.classList.add "to-remove"
 			if frequencies[prevNote] < frequencies[note]
-				prevLabels.classList.add "lower"
+				removeLower i for own i in prevLabels
+				addHigher nextLabels
 			else
-				prevLabels.classList.add "higher"
+				removeHigher i for own i in prevLabels
+				addLower nextLabels
 
 
 			elFreq.innerHTML = precision freq

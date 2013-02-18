@@ -176,7 +176,7 @@
   hp.Q = 0.1;
 
   success = function(stream) {
-    var display, getNeighbours, getPitch, maxPeakCount, maxPeaks, maxTime, noiseCount, noiseThreshold, process, render, src;
+    var addHigher, addLower, display, getNeighbours, getPitch, maxPeakCount, maxPeaks, maxTime, noiseCount, noiseThreshold, process, removeHigher, removeLower, render, src;
     maxTime = 0;
     noiseCount = 0;
     noiseThreshold = -Infinity;
@@ -345,44 +345,58 @@
       }
       return [lower, higher];
     };
+    removeLower = function(el) {
+      el.setAttribute("class", "lower");
+      return setTimeout((function() {
+        return el.parentNode.removeChild(el);
+      }), 500);
+    };
+    removeHigher = function(el) {
+      el.setAttribute("class", "higher");
+      return setTimeout((function() {
+        return el.parentNode.removeChild(el);
+      }), 500);
+    };
+    addLower = function(el) {
+      el.setAttribute("class", "lower");
+      labels.appendChild(el);
+      return setTimeout((function() {
+        return el.setAttribute("class", "current");
+      }), 100);
+    };
+    addHigher = function(el) {
+      el.setAttribute("class", "higher");
+      labels.appendChild(el);
+      return setTimeout((function() {
+        return el.setAttribute("class", "current");
+      }), 100);
+    };
     display = {
       draw: function(freq) {
-        var activeNote, highStep, higher, low, lowStep, lower, nextLabels, note, prevLabels, span, toRemove, variation, _j, _ref;
+        var activeNote, highStep, higher, low, lowStep, lower, nextLabels, note, prevLabels, span, variation, _j, _k, _l, _len, _len1, _ref;
         note = getPitch(freq);
         _ref = getNeighbours(note), lower = _ref[0], higher = _ref[1];
         lowStep = (frequencies[note] - frequencies[lower]) / 5;
         highStep = (frequencies[note] - frequencies[lower]) / 5;
-        toRemove = document.querySelector(".labels .to-remove");
-        if (toRemove) {
-          toRemove.parentNode.removeChild(toRemove);
-        }
-        prevLabels = (document.querySelector(".labels .current")) || document.createElement("div");
-        if (frequencies[prevNote] < frequencies[note]) {
-          prevLabels.setAttribute("class", "lower");
-        } else {
-          prevLabels.setAttribute("class", "higher");
-        }
+        prevLabels = (document.querySelectorAll(".labels .current")) || document.createElement("div");
         nextLabels = document.createElement("div");
-        if (frequencies[prevNote] < frequencies[note]) {
-          nextLabels.classList.add("higher");
-        } else {
-          nextLabels.classList.add("lower");
-        }
         for (i = _j = 0; _j < 5; i = ++_j) {
           span = document.createElement("span");
           span.innerHTML = precision(frequencies[note] + (i - 2) * lowStep);
           nextLabels.appendChild(span);
         }
-        labels.appendChild(nextLabels);
-        nextLabels.classList.add("current");
-        nextLabels.classList.remove("higher");
-        nextLabels.classList.remove("lower");
-        prevLabels.classList.remove("current");
-        prevLabels.classList.add("to-remove");
         if (frequencies[prevNote] < frequencies[note]) {
-          prevLabels.classList.add("lower");
+          for (_k = 0, _len = prevLabels.length; _k < _len; _k++) {
+            i = prevLabels[_k];
+            removeLower(i);
+          }
+          addHigher(nextLabels);
         } else {
-          prevLabels.classList.add("higher");
+          for (_l = 0, _len1 = prevLabels.length; _l < _len1; _l++) {
+            i = prevLabels[_l];
+            removeHigher(i);
+          }
+          addLower(nextLabels);
         }
         elFreq.innerHTML = precision(freq);
         elFreq.classList.remove("inactive");
