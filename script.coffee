@@ -1,12 +1,11 @@
 scale = document.querySelector ".scale"
+labels = document.querySelector ".labels"
 
 for i in [0..80]
 	div = document.createElement "div"
 	hr = document.createElement "hr"
 	div.appendChild hr
 	scale.appendChild div
-
-
 
 
 window.AudioContext = window.AudioContext or window.mozAudioContext or window.webkitAudioContext or window.msAudioContext or window.oAudioContext
@@ -172,25 +171,23 @@ success = (stream) ->
 				minDiff = Math.abs(freq - val)
 				diff = freq - val
 				note = key
-		[note, diff]
+		note
 
 
 	display = 
 
 		draw: (freq) ->
 
-			debugFreq = document.querySelector ".debug-frequency"
-			debugFreq.innerHTML = freq
+			(document.querySelector ".debug-frequency").innerHTML = freq
 
 			elFreq.innerHTML = Math.floor(freq*100)/100
 			elFreq.classList.remove "inactive"
 			elNeedle.classList.remove "inactive"
 			elNeedle.style.webkitTransform = "rotate(#{Math.floor freq/3}deg)";
 	
-			[note, diff] = getPitch freq
+			note = getPitch freq
 
-			debugNote = document.querySelector ".debug-note"
-			debugNote.innerHTML = note
+			(document.querySelector ".debug-note").innerHTML = note
 
 			activeNote = document.querySelector ".notes .active"
 			activeNote.classList.remove "active" if activeNote
@@ -198,31 +195,14 @@ success = (stream) ->
 			activeNote = document.querySelector "#" + note.replace(/[0-9]+/, '').replace('#', '-sharp').toLowerCase()
 			activeNote.classList.add "active" if activeNote
 
-			
-			###
-			displayDiv = $('.tuner div')
-			displayDiv.removeClass()
-			displayDiv.addClass (if Math.abs(diff) < 0.25 then 'inTune' else 'outTune')
-			displayStr = ''
-			displayStr += if diff < -0.25 then '>&nbsp;' else '&nbsp;&nbsp;'
-			displayStr += note.replace(/[0-9]+/g, '')
-			displayStr += if diff > 0.25 then '&nbsp;<' else '&nbsp;&nbsp;'
-			displayDiv.html displayStr
-			###
 
 		clear: ->
-			
+
 			activeNote = document.querySelector ".notes .active"
 			activeNote.classList.remove "active" if activeNote
 
 			elFreq.classList.add "inactive"
 			elNeedle.classList.add "inactive"
-
-			###
-			displayDiv = $('.tuner div')
-			displayDiv.removeClass()
-			displayDiv.html ''
-			###
 
 
 	render = ->

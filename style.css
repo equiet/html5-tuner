@@ -8,7 +8,7 @@ body {
   color: #fff;
   margin: 0;
   text-shadow: 0px 1px 1px #000;
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#222222), to(#111111)); }
+  background: #111; }
 
 a {
   color: #fff;
@@ -249,6 +249,12 @@ a {
 .labels {
   position: relative;
   top: -110px; }
+  .labels div {
+    position: absolute;
+    width: 100%;
+    height: 740px;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s; }
   .labels span {
     position: absolute;
     display: block;
@@ -257,16 +263,45 @@ a {
     text-align: center;
     font-size: 0.5rem;
     color: rgba(255, 255, 255, 0.3); }
-  .labels span:nth-child(1) {
-    -webkit-transform: rotate(-32deg); }
-  .labels span:nth-child(2) {
-    -webkit-transform: rotate(-16deg); }
-  .labels span:nth-child(3) {
-    -webkit-transform: rotate(0deg); }
-  .labels span:nth-child(4) {
+  .labels .lower {
+    opacity: 0;
+    -webkit-transform: rotate(-128deg); }
+  .labels .lower span:nth-child(1) {
     -webkit-transform: rotate(16deg); }
-  .labels span:nth-child(5) {
+  .labels .lower span:nth-child(2) {
     -webkit-transform: rotate(32deg); }
+  .labels .lower span:nth-child(3) {
+    -webkit-transform: rotate(48deg); }
+  .labels .lower span:nth-child(4) {
+    -webkit-transform: rotate(64deg); }
+  .labels .lower span:nth-child(5) {
+    -webkit-transform: rotate(80deg); }
+  .labels .current {
+    opacity: 1;
+    -webkit-transform: rotate(-48deg); }
+  .labels .current span:nth-child(1) {
+    -webkit-transform: rotate(16deg); }
+  .labels .current span:nth-child(2) {
+    -webkit-transform: rotate(32deg); }
+  .labels .current span:nth-child(3) {
+    -webkit-transform: rotate(48deg); }
+  .labels .current span:nth-child(4) {
+    -webkit-transform: rotate(64deg); }
+  .labels .current span:nth-child(5) {
+    -webkit-transform: rotate(80deg); }
+  .labels .higher {
+    opacity: 0;
+    -webkit-transform: rotate(32deg); }
+  .labels .higher span:nth-child(1) {
+    -webkit-transform: rotate(16deg); }
+  .labels .higher span:nth-child(2) {
+    -webkit-transform: rotate(32deg); }
+  .labels .higher span:nth-child(3) {
+    -webkit-transform: rotate(48deg); }
+  .labels .higher span:nth-child(4) {
+    -webkit-transform: rotate(64deg); }
+  .labels .higher span:nth-child(5) {
+    -webkit-transform: rotate(80deg); }
   .labels span:nth-child(1), .labels span:nth-child(5) {
     opacity: 0.4; }
   .labels span:nth-child(2), .labels span:nth-child(4) {
@@ -282,7 +317,7 @@ a {
     height: 2px;
     opacity: 1;
     background: -webkit-gradient(linear, left top, right top, color-stop(3.9%, rgba(255, 255, 255, 0)), color-stop(4%, white), color-stop(15%, rgba(255, 255, 255, 0)));
-    background: linear-gradient(to right, white 0%, rgba(255, 255, 255, 0) 20%);
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 3.9%, white 4%, rgba(255, 255, 255, 0) 15%);
     -webkit-transition: all 0.5s;
     transition: all 0.5s;
     -webkit-transform: rotate(90deg); }
