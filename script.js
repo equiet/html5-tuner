@@ -391,7 +391,7 @@
             removeLower(i);
           }
           addHigher(nextLabels);
-        } else {
+        } else if (frequencies[prevNote] > frequencies[note]) {
           for (_l = 0, _len1 = prevLabels.length; _l < _len1; _l++) {
             i = prevLabels[_l];
             removeHigher(i);

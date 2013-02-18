@@ -229,7 +229,7 @@ success = (stream) ->
 			if frequencies[prevNote] < frequencies[note]
 				removeLower i for own i in prevLabels
 				addHigher nextLabels
-			else
+			else if frequencies[prevNote] > frequencies[note]
 				removeHigher i for own i in prevLabels
 				addLower nextLabels
 
