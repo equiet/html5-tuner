@@ -52,13 +52,22 @@ fft = new FFT(fftSize, sampleRate / 4)
 
 buffer = (0 for i in [0...fftSize])
 bufferFillSize = 2048
-bufferFiller = audioContext.createJavaScriptNode bufferFillSize, 1, 1
+bufferFiller = audioContext.createScriptProcessor bufferFillSize, 1, 1
 bufferFiller.onaudioprocess = (e) ->
 	input = e.inputBuffer.getChannelData 0
 	for b in [bufferFillSize...buffer.length]
 		buffer[b - bufferFillSize] = buffer[b]
 	for b in [0...input.length]
 		buffer[buffer.length - bufferFillSize + b] = input[b]
+
+
+
+volume = audioContext.createScriptProcessor 2048, 1, 1
+volume.onaudioprocess = (e) ->
+	input = e.inputBuffer.getChannelData 0
+	max = 0
+	max += Math.abs(i) for i in input
+	average = max / input.length
 
 
 gauss = new WindowFunction(DSP.GAUSS)
@@ -86,6 +95,8 @@ success = (stream) ->
 
 	src = audioContext.createMediaStreamSource stream
 	src.connect lp
+	src.connect volume
+	volume.connect audioContext.destination
 	lp.connect hp
 	hp.connect bufferFiller
 	bufferFiller.connect audioContext.destination
