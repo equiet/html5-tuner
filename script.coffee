@@ -1,5 +1,18 @@
+window.AudioContext = window.AudioContext or window.mozAudioContext or window.webkitAudioContext or window.msAudioContext or window.oAudioContext
+navigator.getUserMedia = navigator.getUserMedia or navigator.mozGetUserMedia or navigator.webkitGetUserMedia or navigator.msGetUserMedia or navigator.oGetUserMedia
+
+
+
 scale = document.querySelector ".scale"
 labels = document.querySelector ".labels"
+elVolume = document.querySelector ".volume"
+canvas = document.querySelector "canvas"
+elNeedle = document.querySelector ".needle div"
+elFreq = document.querySelector ".frequency .value"
+
+prevNote = false
+
+
 
 for i in [0..80]
 	div = document.createElement "div"
@@ -7,16 +20,6 @@ for i in [0..80]
 	div.appendChild hr
 	scale.appendChild div
 
-
-window.AudioContext = window.AudioContext or window.mozAudioContext or window.webkitAudioContext or window.msAudioContext or window.oAudioContext
-navigator.getUserMedia = navigator.getUserMedia or navigator.mozGetUserMedia or navigator.webkitGetUserMedia or navigator.msGetUserMedia or navigator.oGetUserMedia
-
-
-canvas = document.querySelector "canvas"
-elNeedle = document.querySelector ".needle div"
-elFreq = document.querySelector ".frequency .value"
-
-prevNote = false
 
 
 precision = (x) ->
@@ -65,9 +68,13 @@ bufferFiller.onaudioprocess = (e) ->
 volume = audioContext.createScriptProcessor 2048, 1, 1
 volume.onaudioprocess = (e) ->
 	input = e.inputBuffer.getChannelData 0
-	max = 0
-	max += Math.abs(i) for i in input
-	average = max / input.length
+	total = 0
+	total += Math.abs(i) for i in input
+	average = total / input.length
+
+	elVolume.style.borderColor = "rgba(255,255,255,#{average+0.05})"
+	(document.querySelector ".debug-volume").innerHTML = precision average
+
 
 
 gauss = new WindowFunction(DSP.GAUSS)

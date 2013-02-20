@@ -343,6 +343,18 @@ a {
     font-weight: 700;
     color: #333; }
 
+.volume {
+  position: absolute;
+  float: right;
+  top: -100px;
+  right: 130px;
+  width: 14px;
+  height: 14px;
+  border: 3px solid rgba(255, 255, 255, 0.05);
+  border-radius: 100%;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s; }
+
 .notes {
   position: relative;
   margin: 0;
