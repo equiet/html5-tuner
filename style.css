@@ -315,6 +315,7 @@ a {
     opacity: 0.7; }
 
 .needle {
+  display: none;
   position: relative;
   box-sizing: border-box; }
   .needle div {
