@@ -461,7 +461,9 @@
         low = frequencies[note] - 2 * lowStep;
         variation = (freq - frequencies[note]) / (frequencies[note] - low);
         elNeedle.style.webkitTransform = "rotate(" + (precision(variation * 32 + 90)) + "deg)";
-        needle.transform("r" + (precision(variation * 32)) + ",350,350");
+        needle.animate({
+          transform: "r" + (precision(variation * 32)) + ",350,350"
+        }, 400, "<>");
         (document.querySelector(".debug-note")).innerHTML = note;
         (document.querySelector(".debug-frequency")).innerHTML = freq;
         activeNote = document.querySelector(".notes .active");
