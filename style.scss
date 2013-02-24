@@ -48,7 +48,14 @@ a {
 	top: 50%;
 }
 
+.svg {
+	position: absolute;
+	width: 100%;
+	top: -90px;
+}
+
 .scale {
+	display: none;
 	position: relative;
 	top: 250px;
 	

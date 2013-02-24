@@ -14,6 +14,35 @@ prevNote = false
 
 
 
+
+
+paper = new Raphael document.querySelector(".svg"), 700, 400
+
+# Scale
+for i in [-40..40]
+	if i == 0
+		rect = paper.rect 350, 0, 2, 12
+		rect.attr "fill": "rgba(255,255,255,1)"
+	else if i % 16 == 0
+		rect = paper.rect 350, 0, 1, 10
+		rect.attr "fill": "rgba(255,255,255,1)"
+	else if i % 2 == 0
+		rect = paper.rect 350, 0, 1, 6
+		rect.attr "fill": "rgba(255,255,255,0.7)"
+	else
+		rect = paper.rect 350, 2, 1, 2
+		rect.attr "fill": "rgba(255,255,255,0.3)"
+
+	rect.attr "stroke-width": 0, "opacity": Math.min(1, (-1 + 40/Math.abs(i))*2)
+	rect.transform "r#{i},350,350"
+
+# Needle
+needle = paper.rect 350, 18, 2, 80
+needle.attr "stroke-width": 0, "fill": "90-#111-#fff"
+
+
+
+
 for i in [0..80]
 	div = document.createElement "div"
 	hr = document.createElement "hr"
