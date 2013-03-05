@@ -7,4 +7,4 @@ HTML5 experiment.
 * [dsp.js](https://github.com/corbanbrook/dsp.js/) by Corban Brook
 
 ## TODO
-* Shorten needle (remove gradient offset workaround)
+* Rewrite labels into SVG
