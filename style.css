@@ -314,24 +314,6 @@ a {
   .labels span:nth-child(2), .labels span:nth-child(4) {
     opacity: 0.7; }
 
-.needle {
-  display: none;
-  position: relative;
-  box-sizing: border-box; }
-  .needle div {
-    position: absolute;
-    top: 250px;
-    width: 100%;
-    height: 2px;
-    opacity: 1;
-    background: -webkit-gradient(linear, left top, right top, color-stop(3.9%, rgba(255, 255, 255, 0)), color-stop(4%, white), color-stop(15%, rgba(255, 255, 255, 0)));
-    background: linear-gradient(to right, rgba(255, 255, 255, 0) 3.9%, white 4%, rgba(255, 255, 255, 0) 15%);
-    -webkit-transition: all 0.5s;
-    transition: all 0.5s;
-    -webkit-transform: rotate(90deg); }
-    .needle div.inactive {
-      opacity: 0.1; }
-
 .frequency {
   position: relative;
   top: -40px; }

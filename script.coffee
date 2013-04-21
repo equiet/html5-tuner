@@ -7,12 +7,11 @@ scale = document.querySelector ".scale"
 labels = document.querySelector ".labels"
 elVolume = document.querySelector ".volume"
 canvas = document.querySelector "canvas"
-elNeedle = document.querySelector ".needle div"
 elFreq = document.querySelector ".frequency .value"
 
 prevNote = false
 
-
+fadeOutInterval = null
 
 
 
@@ -57,18 +56,18 @@ precision = (x) ->
 
 
 frequencies =
-  'A0': 27.5, 'A1': 55, 'A2': 110, 'A3': 220, 'A4': 440, 'A5': 880, 'A6': 1760, 'A7': 3520.00
-  'A#0': 29.1352, 'A#1': 58.2705, 'A#2': 116.541, 'A#3': 233.082, 'A#4': 466.164, 'A#5': 932.328, 'A#6': 1864.66, 'A#7': 3729.31
-  'B0': 30.8677, 'B1': 61.7354, 'B2': 123.471, 'B3': 246.942, 'B4': 493.883, 'B5': 987.767, 'B6': 1975.53, 'B7': 3951.07
-  'C1': 32.7032, 'C2': 65.4064, 'C3': 130.813, 'C4': 261.626, 'C5': 523.251, 'C6': 1046.50, 'C7': 2093, 'C8': 4186.01
-  'C#1': 34.6478, 'C#2': 69.2957, 'C#3': 138.591, 'C#4': 277.183, 'C#5': 554.365, 'C#6': 1108.73, 'C#7': 2217.46
-  'D1': 36.7081, 'D2': 73.4162, 'D3': 146.832, 'D4': 293.665, 'D5': 587.330, 'D6': 1174.66, 'D7': 2349.32
-  'D#1': 38.8909, 'D#2': 77.7817, 'D#3': 155.563, 'D#4': 311.127, 'D#5': 622.254, 'D#6': 1244.51, 'D#7': 2489.02
-  'E1': 41.2034, 'E2': 82.4069, 'E3': 164.814, 'E4': 329.628, 'E5': 659.255, 'E6': 1318.51, 'E7': 2637.02
-  'F1': 43.6563, 'F2': 87.3071, 'F3': 174.614, 'F4': 349.228, 'F5': 698.456, 'F6': 1396.91, 'F7': 2793.83
-  'F#1': 46.2493, 'F#2': 92.4986, 'F#3': 184.997, 'F#4': 369.994, 'F#5': 739.989, 'F#6': 1479.98, 'F#7': 2959.96
-  'G1': 48.9994, 'G2': 97.9989, 'G3': 195.998, 'G4': 391.995, 'G5': 783.991, 'G6': 1567.98, 'G7': 3135.96
-  'G#1': 51.9131, 'G#': 103.826, 'G#3': 207.652, 'G#4': 415.305, 'G#5': 830.609, 'G#6': 1661.22, 'G#7': 3322.44
+	'A0': 27.5, 'A1': 55, 'A2': 110, 'A3': 220, 'A4': 440, 'A5': 880, 'A6': 1760, 'A7': 3520.00
+	'A#0': 29.1352, 'A#1': 58.2705, 'A#2': 116.541, 'A#3': 233.082, 'A#4': 466.164, 'A#5': 932.328, 'A#6': 1864.66, 'A#7': 3729.31
+	'B0': 30.8677, 'B1': 61.7354, 'B2': 123.471, 'B3': 246.942, 'B4': 493.883, 'B5': 987.767, 'B6': 1975.53, 'B7': 3951.07
+	'C1': 32.7032, 'C2': 65.4064, 'C3': 130.813, 'C4': 261.626, 'C5': 523.251, 'C6': 1046.50, 'C7': 2093, 'C8': 4186.01
+	'C#1': 34.6478, 'C#2': 69.2957, 'C#3': 138.591, 'C#4': 277.183, 'C#5': 554.365, 'C#6': 1108.73, 'C#7': 2217.46
+	'D1': 36.7081, 'D2': 73.4162, 'D3': 146.832, 'D4': 293.665, 'D5': 587.330, 'D6': 1174.66, 'D7': 2349.32
+	'D#1': 38.8909, 'D#2': 77.7817, 'D#3': 155.563, 'D#4': 311.127, 'D#5': 622.254, 'D#6': 1244.51, 'D#7': 2489.02
+	'E1': 41.2034, 'E2': 82.4069, 'E3': 164.814, 'E4': 329.628, 'E5': 659.255, 'E6': 1318.51, 'E7': 2637.02
+	'F1': 43.6563, 'F2': 87.3071, 'F3': 174.614, 'F4': 349.228, 'F5': 698.456, 'F6': 1396.91, 'F7': 2793.83
+	'F#1': 46.2493, 'F#2': 92.4986, 'F#3': 184.997, 'F#4': 369.994, 'F#5': 739.989, 'F#6': 1479.98, 'F#7': 2959.96
+	'G1': 48.9994, 'G2': 97.9989, 'G3': 195.998, 'G4': 391.995, 'G5': 783.991, 'G6': 1567.98, 'G7': 3135.96
+	'G#1': 51.9131, 'G#': 103.826, 'G#3': 207.652, 'G#4': 415.305, 'G#5': 830.609, 'G#6': 1661.22, 'G#7': 3322.44
 
 
 
@@ -101,7 +100,11 @@ volume.onaudioprocess = (e) ->
 	total += Math.abs(i) for i in input
 	average = total / input.length
 
-	elVolume.style.borderColor = "rgba(255,255,255,#{average+0.05})"
+	volumeIndicator = average * 10
+	volumeIndicator = Math.max 0.05, volumeIndicator
+	volumeIndicator = Math.min 1, volumeIndicator
+
+	elVolume.style.borderColor = "rgba(255,255,255,#{volumeIndicator})"
 	(document.querySelector ".debug-volume").innerHTML = precision average
 
 
@@ -143,28 +146,28 @@ success = (stream) ->
 		bufferCopy = (b for b in buffer)
 
 		gauss.process bufferCopy
-    
+	
 		downsampled = []
 		for s in [0...bufferCopy.length] by 4
 			downsampled.push bufferCopy[s]
-    
+	
 		upsampled = []
 		for s in downsampled
 			upsampled.push s
 			upsampled.push 0
 			upsampled.push 0
 			upsampled.push 0
-    
+	
 		fft.forward upsampled
-    
+	
 		if noiseCount < 10
 			noiseThreshold = Math.max(noiseThreshold, i) for i in fft.spectrum
 			noiseThrehold = if noiseThreshold > 0.001 then 0.001 else noiseThreshold
 			noiseCount++
-      
+	  
 		spectrumPoints = (x: x, y: fft.spectrum[x] for x in [0...(fft.spectrum.length / 4)])
 		spectrumPoints.sort (a, b) -> (b.y - a.y)
-    
+	
 		peaks = []
 		for p in [0...8]
 			if spectrumPoints[p].y > noiseThreshold * 5
@@ -206,14 +209,15 @@ success = (stream) ->
 				interp = (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x)
 				freq = interp * (sampleRate / fftSize)
 
-				display.draw freq
+				render freq
+
 		else
 			maxPeaks = 0
 			maxPeakCount++
-			if maxPeakCount > 20
-				display.clear()
+			#if maxPeakCount > 20
+			#	display.clear()
 		
-		render()
+		# render freq
 
 
 	getPitch = (freq) ->
@@ -254,82 +258,67 @@ success = (stream) ->
 		labels.appendChild el
 		setTimeout (-> el.setAttribute "class", "current"), 100
 
+	render = (freq) ->
+		
+		note = getPitch freq
+		[lower, higher] = getNeighbours note
 
-	display = 
+		lowStep = (frequencies[note] - frequencies[lower]) / 5
+		highStep = (frequencies[note] - frequencies[lower]) / 5
 
-		draw: (freq) ->
-	
-			note = getPitch freq
-			[lower, higher] = getNeighbours note
+		prevLabels = (document.querySelectorAll ".labels .current") || document.createElement "div"
 
-			lowStep = (frequencies[note] - frequencies[lower]) / 5
-			highStep = (frequencies[note] - frequencies[lower]) / 5
+		nextLabels = document.createElement "div"
+		for i in [0...5]
+			span = document.createElement "span"
+			span.innerHTML = precision (frequencies[note] + (i-2)*lowStep)
+			nextLabels.appendChild span
 
-			prevLabels = (document.querySelectorAll ".labels .current") || document.createElement "div"
-
-			nextLabels = document.createElement "div"
-			for i in [0...5]
-				span = document.createElement "span"
-				span.innerHTML = precision (frequencies[note] + (i-2)*lowStep)
-				nextLabels.appendChild span
-
-			if frequencies[prevNote] < frequencies[note]
-				removeLower i for own i in prevLabels
-				addHigher nextLabels
-			else if frequencies[prevNote] > frequencies[note]
-				removeHigher i for own i in prevLabels
-				addLower nextLabels
+		if frequencies[prevNote] < frequencies[note]
+			removeLower i for own i in prevLabels
+			addHigher nextLabels
+		else if frequencies[prevNote] > frequencies[note]
+			removeHigher i for own i in prevLabels
+			addLower nextLabels
 
 
-			elFreq.innerHTML = precision freq
-			elFreq.classList.remove "inactive"
-			elNeedle.classList.remove "inactive"
+		elFreq.innerHTML = precision freq
+		elFreq.classList.remove "inactive"
 
 
-			low = frequencies[note] - 2*lowStep
-			variation = (freq - frequencies[note]) / (frequencies[note] - low)
-
-			elNeedle.style.webkitTransform = "rotate(#{precision(variation*32+90)}deg)";
-			needle.animate {transform: "r#{precision(variation*32)},350,350"}, 400, "<>"
+		needle.attr "opacity": 1
 
 
-			(document.querySelector ".debug-note").innerHTML = note
-			(document.querySelector ".debug-frequency").innerHTML = freq
+		low = frequencies[note] - 2*lowStep
+		variation = (freq - frequencies[note]) / (frequencies[note] - low)
+
+		needle.animate {transform: "r#{precision(variation*32)},350,350"}, 400, "<>"
 
 
-			activeNote = document.querySelector ".notes .active"
-			activeNote.classList.remove "active" if activeNote
-
-			activeNote = document.querySelector "#" + note.replace(/[0-9]+/, '').replace('#', '-sharp').toLowerCase()
-			activeNote.classList.add "active" if activeNote
-
-			prevNote = note
+		(document.querySelector ".debug-note").innerHTML = note
+		(document.querySelector ".debug-frequency").innerHTML = freq
 
 
-		clear: ->
+		activeNote = document.querySelector ".notes .active"
+		activeNote.classList.remove "active" if activeNote
 
-			activeNote = document.querySelector ".notes .active"
-			activeNote.classList.remove "active" if activeNote
+		activeNote = document.querySelector "#" + note.replace(/[0-9]+/, '').replace('#', '-sharp').toLowerCase()
+		activeNote.classList.add "active" if activeNote
 
-			elFreq.classList.add "inactive"
-			elNeedle.classList.add "inactive"
+		prevNote = note
+
+		clearTimeout fadeOutInterval
+		setTimeout (-> fadeOutInfo()), 1000
 
 
-	render = ->
+	fadeOutInfo = () ->
+		needle.attr "opacity": 0.3
 
-		###
-		context.clearRect 0, 0, canvas.width, canvas.height
-		newMaxTime = _.reduce buffer, ((max, next) -> if Math.abs(next) > max then Math.abs(next) else max), -Infinity
-		maxTime = if newMaxTime > maxTime then newMaxTime else maxTime
-		context.fillStyle = '#EEE'
-		timeWidth = (canvas.width - 100) / (buffer.length)
-		for s in [0...buffer.length]
-			context.fillRect timeWidth * s, canvas.height / 2, timeWidth, -(canvas.height / 2) * (buffer[s] / maxTime)
-		context.fillStyle = '#F77'
-		freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4)
-		for f in [10...(fft.spectrum.length / 4) - 10]
-			context.fillRect freqWidth * f, canvas.height / 2, freqWidth, -Math.pow(1e4 * fft.spectrum[f], 2)
-		###
+		activeNote = document.querySelector ".notes .active"
+		activeNote.classList.remove "active" if activeNote
+		
+		elFreq.classList.add "inactive"
+
 	
 	setInterval process, 100
 
