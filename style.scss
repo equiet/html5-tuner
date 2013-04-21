@@ -48,7 +48,14 @@ a {
 	top: 50%;
 }
 
+.svg {
+	position: absolute;
+	width: 100%;
+	top: -90px;
+}
+
 .scale {
+	display: none;
 	position: relative;
 	top: 250px;
 	
@@ -168,28 +175,6 @@ a {
 
 }
 
-.needle {
-	position: relative;
-	box-sizing: border-box;
-	
-	div {
-		position: absolute;
-		top: 250px;
-		width: 100%;
-		height: 2px;
-		opacity: 1;
-		// TODO: Shorten neeedle (remove gradient workaround)
-		background: -webkit-gradient(linear, left top, right top, color-stop(3.9%, rgba(255,255,255,0)), color-stop(4%, rgba(255,255,255,1)), color-stop(15%, rgba(255,255,255,0)));
-		background: linear-gradient(to right, rgba(255,255,255,0) 3.9%, rgba(255,255,255,1) 4%, rgba(255,255,255,0) 15%);
-		@include transition(all 0.5s);
-		@include transform(rotate(90deg));
-		
-		&.inactive {
-			opacity: 0.1;
-		}
-	}
-}
-
 .frequency {
 	position: relative;
 	top: -40px;
@@ -211,6 +196,18 @@ a {
 		font-weight: 700;
 		color: #333;
 	}
+}
+
+.volume {
+	position: absolute;
+	float: right;
+	top: -100px;
+	right: 130px;
+	width: 14px;
+	height: 14px;
+	border: 3px solid rgba(255,255,255,0.05);
+	border-radius: 100%;
+	@include transition(all 0.2s);
 }
 
 .notes {

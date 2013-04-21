@@ -14,13 +14,13 @@
 
 	<section id="container">
 
+		<div class="svg"></div>
+
+		<div class="volume"></div>
+
 		<div class="scale"></div>
 
 		<div class="labels"></div>
-
-		<div class="needle">
-			<div class="inactive"></div>
-		</div>
 		
 		<div class="frequency">
 			<span class="value inactive">0</span>
@@ -49,14 +49,15 @@
 	</footer>
 
 	<div class="debug">
-		<span class="debug-crossings"></span>
 		<span class="debug-frequency"></span>
 		<span class="debug-note"></span>
+		<span class="debug-volume"></span>
 	</div>
 
 	<canvas width="1000" height="300"></canvas>
 
 	<script src="dsp.js"></script>
+	<script src="raphael-min.js"></script>
 	<script src="script.js"></script>
 	
 </body>
