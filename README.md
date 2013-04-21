@@ -1,10 +1,10 @@
 # HTML5 Tuner (HTML5, CSS3 and JavaScript)
 
-HTML5 experiment.
+HTML5 experiment. Currently optimized only for WebKit browsers.
 
 ## Credits
 * [phenomnomnominal](https://github.com/phenomnomnominal) and his work on [Tuner.coffee](http://phenomnomnominal.github.com/docs/tuner.html)
 * [dsp.js](https://github.com/corbanbrook/dsp.js/) by Corban Brook
 
-## TODO
-* Shorten needle (remove gradient offset workaround)
+## Works on
+* Chrome 26 on Mac
